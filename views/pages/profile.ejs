@@ -1,0 +1,24 @@
+<h2 class="text-center">Your Profile</h2>
+
+<div class="card mt-4 mx-auto" style="max-width: 500px;">
+  <div class="card-body text-center">
+    <!-- Profile Image -->
+    <img 
+      src="/<%= user.profilePhoto || 'images/default.png' %>" 
+      class="img-fluid rounded-circle mb-3" 
+      alt="Profile Photo" 
+      style="width: 150px; height: 150px; object-fit: cover; border: 2px solid #ccc;"
+    >
+
+    <!-- User Info -->
+    <h5 class="card-title"><%= user.name %> <%= user.surname %></h5>
+    <p class="card-text"><strong></strong> <%= user.bio %></p>
+    <p class="card-text"><strong>Email:</strong> <%= user.email %></p>
+    <p class="card-text"><strong>Branch:</strong> <%= user.branch %></p>
+    <p class="card-text"><strong>Passing Out Year:</strong> <%= user.passingOutYear %></p>
+    
+
+    <!-- Logout Button -->
+    <a href="/logout" class="btn btn-danger mt-3">Logout</a>
+  </div>
+</div>

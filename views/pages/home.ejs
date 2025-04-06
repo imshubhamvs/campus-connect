@@ -1,0 +1,9 @@
+<div class="container">
+    <h3>📣 Campus Feed</h3>
+  
+    <% posts.forEach(post => { %>
+      <%- include('../partials/postCard', { post }) %>
+    <% }) %>
+  </div>
+  <%- include('../partials/trending.ejs') %>
+  

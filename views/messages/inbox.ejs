@@ -1,0 +1,74 @@
+<% title = "Messages" %>
+
+<div class="row">
+  <!-- 📬 Sidebar: Recent Chats + Search -->
+  <div class="col-md-4 border-end" style="height: 80vh; overflow-y: auto;">
+    <h5 class="mb-3">📨 Messages</h5>
+
+    <!-- 🔍 Search Bar -->
+    <div class="mb-3">
+      <input type="text" id="searchInput" class="form-control" placeholder="Search users to message..." oninput="searchContent()" />
+      <div id="searchResults" class="list-group mt-2"></div>
+    </div>
+
+    <!-- 📨 Recent Chats List -->
+    <% if (chats.length === 0) { %>
+      <p class="text-muted">No messages yet.</p>
+    <% } else { %>
+      <ul class="list-group">
+        <% chats.forEach(chat => { %>
+          <a href="/messages/<%= chat.email %>" class="list-group-item list-group-item-action d-flex align-items-center">
+            <img src="/<%= chat.photo %>" class="rounded-circle me-3" width="45" height="45" />
+            <div>
+              <strong><%= chat.name %></strong><br/>
+              <small class="text-muted"><%= chat.lastMessage %></small>
+            </div>
+          </a>
+        <% }) %>
+      </ul>
+    <% } %>
+  </div>
+
+  <!-- 👉 Right Side: Select a chat prompt -->
+  <div class="col-md-8 d-flex align-items-center justify-content-center" style="height: 80vh;">
+    <div class="text-center text-muted">
+      <h4>Select a user to start chatting</h4>
+      <p class="mt-2">Your conversation will appear here.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 🔍 Search Script -->
+<script>
+  async function searchContent() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const resultsContainer = document.getElementById('searchResults');
+    resultsContainer.innerHTML = '';
+
+    if (query === '') return;
+
+    try {
+      const res = await fetch(`/search-users?q=${query}`);
+      const users = await res.json();
+
+      if (users.length === 0) {
+        resultsContainer.innerHTML = '<p class="text-muted p-2">No results found.</p>';
+        return;
+      }
+
+      users.forEach(user => {
+        const div = document.createElement('a');
+        div.className = 'list-group-item list-group-item-action d-flex align-items-center';
+        div.href = `/messages/${user.email}`;
+        div.innerHTML = `
+          <img src="/${user.profilePhoto}" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+          <span>${user.name} ${user.surname}</span>
+        `;
+        resultsContainer.appendChild(div);
+      });
+
+    } catch (err) {
+      console.error('Search error:', err);
+    }
+  }
+</script>
