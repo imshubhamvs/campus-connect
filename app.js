@@ -25,8 +25,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://user1:shubham3011@campu
     .catch(err => console.log(err));
   
   // EJS and Middleware
-  app.set('view engine', 'ejs');
-  app.set('views', path.join(__dirname, 'views'));
+
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.urlencoded({ extended: true }));
   
@@ -57,6 +56,7 @@ app.get('/profile', (req, res) => {
   // Routes
   const homeRoute = require('./routes/index')
   app.use(homeRoute);
+
   const authRoutes = require('./routes/auth');
   app.use(authRoutes);
   
