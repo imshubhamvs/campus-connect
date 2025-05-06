@@ -4,7 +4,7 @@
   <div class="row">
     <!-- Profile Photo -->
     <div class="col-md-4 d-flex justify-content-center align-items-center">
-      <img src="/<%= targetUser.profilePhoto %>" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Photo">
+      <img src="<%= targetUser.profilePhoto %>" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Photo">
     </div>
 
     <!-- User Info -->
@@ -43,7 +43,7 @@
         <% posts.forEach(post => { %>
           <div class="col">
             <div class="card h-100">
-              <img src="/<%= post.imageUrl %>" class="card-img-top" alt="Post Image">
+              <img src="<%= post.imageUrl %>" class="card-img-top" alt="Post Image">
               <div class="card-body">
                 <p class="card-text"><%= post.caption %></p>
               </div>

@@ -72,20 +72,35 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 
 // Configure Multer for post image uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const dir = 'public/images/posts';
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    const sanitizedEmail = req.session.user.email.replace(/[^a-zA-Z0-9]/g, '_');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+// Configure your Cloudinary credentials
+cloudinary.config({
+  cloud_name: 'dmlisflzp',
+  api_key: '533315728651319',
+  api_secret: 'mECOorqdgveFPc4P1FS1vAwmceI'
+});
+
+// Configure Cloudinary Storage for Multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    const sanitizedEmail = req.session?.user?.email?.replace(/[^a-zA-Z0-9]/g, '_') || 'user';
     const uniqueSuffix = Date.now();
-    cb(null, `${sanitizedEmail}_${uniqueSuffix}${ext}`);
+    const ext = file.originalname.split('.').pop();
+
+    return {
+      folder: 'posts', // Cloudinary folder name
+      format: ext,     // Optional: keep original extension
+      public_id: `${sanitizedEmail}_${uniqueSuffix}`
+    };
   }
 });
+
 const upload = multer({ storage });
+
+// module.exports = { upload };
 
 // ✅ GET user profile by email
 router.get('/user/:email', async (req, res) => {
@@ -158,7 +173,10 @@ router.post('/add-post', upload.single('image'), async (req, res) => {
       if (!req.session.user) return res.redirect('/login');
   
       const { caption } = req.body;
-      const imagePath = `images/posts/${req.file.filename}`;
+      const imagePath = req.file?.path;
+      if (!imagePath) {
+        return res.status(400).send('Image upload failed.');
+      } 
   
       // Get logged in user details
     
