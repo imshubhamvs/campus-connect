@@ -18,7 +18,7 @@ app.set('layout', 'layout'); // This means views/layout.ejs will be used as the 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/campusConnect', {
+mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://user1:shubham3011@campus.81pgaa9.mongodb.net/?retryWrites=true&w=majority&appName=campus', {
     useNewUrlParser: true,
     useUnifiedTopology: true
   }).then(() => console.log('✅ MongoDB connected'))
@@ -39,33 +39,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/campusConne
  
 
 
-  
 
-
-
-// Sample data for posts
-const posts = [
-  {
-    userPhoto: '/images/user1.jpg',
-    username: 'john_doe',
-    imageUrl: 'https://cdn.prod.website-files.com/5b3dd54182ecae4d1602962f/609e33e18c5000af6211f094_HR%20Hackathon%20-%20Section%202.jpg',
-    caption: 'Had a great time at the hackathon! 🧠⚡ #HackCampus'
-  },
-  {
-    userPhoto: '/images/user1.jpg',
-    username: 'john_doe',
-    imageUrl: 'https://marketplace.canva.com/EAEMDgoltYE/1/0/1600w/canva-angry-cat-photo-and-text-meme-km1G_BD6MC8.jpg',
-    caption: 'Just vibing with the project cat 😼 #CatMode'
-  }
-];
-
-// Routes
-// app.get('/', (req, res) => {
-//   res.render('pages/home', {
-//     title: 'Home',
-//     posts
-//   });
-// });
 app.get('/profile', (req, res) => {
     if (!req.session.user) return res.redirect('/login');
     res.render('pages/profile', {
